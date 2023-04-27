@@ -124,6 +124,10 @@ public class Venta extends javax.swing.JFrame {
     }
    private JPanel panelBotones;
    
+   /**
+    *Metodo para preparar comprobar que los botones se generan bien 
+    */
+   
    public void prueba(){
    panelBotones = new JPanel(new GridLayout(0, 3));
    panelBotones.add(new JButton("Botón 1"));

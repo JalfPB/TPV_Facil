@@ -17,7 +17,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author usuario
+ * @author Alfonso
  */
 public class Socio extends javax.swing.JFrame {
     
@@ -32,7 +32,6 @@ public class Socio extends javax.swing.JFrame {
         initComponents();
         PrepararTabla();
         PrepararBaseDatos();
-        
     }
 
     /**
@@ -186,7 +185,9 @@ public class Socio extends javax.swing.JFrame {
         });
     }
     
-    //Metodo para preparar la conexion a la base de datos
+    /**
+    *Metodo para preparar la conexion a la base de datos
+    */
     
    public void PrepararBaseDatos(){
         try{
@@ -213,6 +214,10 @@ public class Socio extends javax.swing.JFrame {
         }
     }
    
+   /**
+    * Muestra los socios en la tabla haciendo una query en la base de datos.
+    */
+   
    public void MostrarSocios(){
         String fecha;
         
@@ -235,11 +240,28 @@ public class Socio extends javax.swing.JFrame {
         }
     }
    
+   /**
+    * Metodo que prepara la tabla para la lista de Datos.
+    */
+   
    private void PrepararTabla(){
         String titulos[] = {"DNI","Nombre","% Descuento"};
         m = new DefaultTableModel(null, titulos);
         tabla.setModel(m);
     }
+   
+   /**
+    * Metodo que inserta un nuevo socio en la BBDD.
+    * @param dni DNI del Socio a insertar
+    * @param nombre Nombre del Socio a insertar
+    * @param descuento Descuento que se le aplicara al Socio en su compra si asi lo desea.
+    */
+   
+   private void InsertarSocio(String dni,String nombre,int descuento){
+       
+	   //TERMINAR
+	   
+   }
   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
