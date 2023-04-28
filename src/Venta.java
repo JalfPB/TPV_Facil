@@ -1,7 +1,14 @@
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.io.*;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -13,9 +20,9 @@ import javax.swing.JPanel;
  *
  * @author usuario
  */
-public class Venta extends javax.swing.JFrame {
+public class Venta extends javax.swing.JFrame implements ActionListener{
     
-    
+    ArrayList lista = new ArrayList();
 
     /**
      * Creates new form Venta
@@ -23,6 +30,7 @@ public class Venta extends javax.swing.JFrame {
     public Venta() {
         initComponents();
         prueba();
+        crearTicket();
     }
 
     /**
@@ -125,14 +133,90 @@ public class Venta extends javax.swing.JFrame {
    private JPanel panelBotones;
    
    /**
-    *Metodo para preparar comprobar que los botones se generan bien 
+    *Metodo para comprobar que los botones se generan bien 
     */
    
    public void prueba(){
    panelBotones = new JPanel(new GridLayout(0, 3));
    panelBotones.add(new JButton("Botón 1"));
    panelBotones.add(new JButton("Botón 2"));
-    panelScroll.setViewportView(panelBotones);
+   panelScroll.setViewportView(panelBotones);
+   JButton boton = (JButton)panelBotones.getComponent(0);
+   boton.addActionListener(this);
+   anadir(boton);
+   }
+   
+   //IMPLEMENTAR CUANDO SE HAGA LA CONEXION CON LA BASE DE DATOS
+   
+   private void recorrerItems() {
+	   
+   }
+   
+   //Metodo necesario para la implementacion
+   
+   public void actionPerformed(ActionEvent e) {
+    
+   }
+   
+   private void anadir(JButton boton) {
+	   
+	   boton.addActionListener(new ActionListener() {
+
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               JOptionPane.showMessageDialog(null, "Saludos, funciona!");
+               //CAMBIAR LUEGO POR EL OBJETO DE LA BBDD
+               jTextArea1.append(boton.getText()+ " Funciona");
+           }
+
+       });
+	   
+   }
+   
+   private void crearTicket() {
+	   
+	   jButton1.addActionListener(new ActionListener() {
+
+           @Override
+           public void actionPerformed(ActionEvent e) {
+               anadirTicketFich();
+           }
+
+       });
+	   
+   }
+   
+   private void anadirTicketFich() {
+	   
+	   String rutafich="Ticket_",dia,mes,annio;
+	   Calendar c = new GregorianCalendar();
+	   dia = Integer.toString(c.get(Calendar.DATE));
+	   mes = Integer.toString(c.get(Calendar.MONTH));
+	   annio = Integer.toString(c.get(Calendar.YEAR));
+	   
+	   rutafich=rutafich+dia+"-"+mes+"-"+annio+".txt";
+	   
+	   try {
+	   
+		   File fichero = new File (rutafich);
+		   fichero.createNewFile();
+		   
+		   FileWriter fw = new FileWriter(rutafich);
+	       PrintWriter pw = new PrintWriter(fw);
+	       
+	       pw.println(jTextArea1.getText());
+	       pw.close();
+	       fw.close();
+	       JOptionPane.showMessageDialog(null, "Ticket Guardado");
+	       jTextArea1.setText("");
+	       
+	   }catch(Exception e) {
+		   
+		   JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar el ticket");
+		   System.out.println(e.getMessage());
+	   }
+	   
+	   
    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
