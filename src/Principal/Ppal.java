@@ -1,3 +1,6 @@
+package Principal;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -15,6 +18,8 @@ public class Ppal extends javax.swing.JFrame {
      */
     public Ppal() {
         initComponents();
+        this.setTitle("TPV Fácil");
+        new PantallaCarga();
     }
 
     /**
@@ -147,6 +152,37 @@ public class Ppal extends javax.swing.JFrame {
             }
         });
     }
+    
+    public void login(String usuario,String contraseña) {
+    	String empresa;
+    	
+    	//SQL QUERY para comprobar que el usuario existe en la base de datos
+    	
+    	//txtEmpresa.setText(empresa);
+    	
+    }
+    
+    public void crearLogin() {
+    	
+    	String usuario,contraseña,mensaje="";
+    	//if(!txtUsuario.isEmpty()){
+    	//	usuario=txtUsuario.getText();
+    	//}else{
+    	//	mensaje+="El nombre de Usuario no puede estar vacio."+"\n";
+    	//}
+    	//if(!txtContraseña.isEmpty()){
+    	//	contraseña=txtContraseña.getText();
+    	//}else{
+    	//	mensaje+="La contraseña no puede estar vacia."+"\n";
+    	//}
+    	if(mensaje.isEmpty()){
+    	//SQL Insertar en Empresas
+    	}else{
+    		JOptionPane.showMessageDialog(null, mensaje);
+    	}
+    	
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
