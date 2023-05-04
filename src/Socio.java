@@ -1,5 +1,5 @@
-package Principal;
 
+import java.beans.Statement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -19,19 +19,19 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Alfonso
  */
-public class Inventario extends javax.swing.JFrame {
+public class Socio extends javax.swing.JFrame {
     
     Connection conexion;
     java.sql.Statement sentencia;
     DefaultTableModel m;
 
     /**
-     * Creates new form Inventario
+     * Creates new form Socio
      */
-    public Inventario() {
+    public Socio() {
         initComponents();
-        PrepararBaseDatos();
         PrepararTabla();
+        PrepararBaseDatos();
     }
 
     /**
@@ -103,13 +103,13 @@ public class Inventario extends javax.swing.JFrame {
 
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "ID", "Nombre", "Cantidad", "Precio Ind."
+                "DNI", "Nombre", "% Descuento"
             }
         ));
         jScrollPane1.setViewportView(tabla);
@@ -119,27 +119,27 @@ public class Inventario extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
                         .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(10, 10, 10)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 286, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
+                        .addGap(22, 22, 22)
                         .addComponent(jLabel1)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                .addGap(18, 18, 18))
         );
 
         pack();
@@ -147,7 +147,7 @@ public class Inventario extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        MostrarInventario();
+        MostrarSocios();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -167,28 +167,29 @@ public class Inventario extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Inventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Socio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Inventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Socio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Inventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Socio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Inventario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Socio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Inventario().setVisible(true);
+                new Socio().setVisible(true);
             }
         });
     }
     
     /**
-     *Metodo para preparar la conexion a la base de datos
-     */
-    public void PrepararBaseDatos(){
+    *Metodo para preparar la conexion a la base de datos
+    */
+    
+   public void PrepararBaseDatos(){
         try{
             String controlador="com.mysql.jdbc.Driver";
             Class.forName(controlador).newInstance();
@@ -212,25 +213,24 @@ public class Inventario extends javax.swing.JFrame {
             Logger.getLogger(Ppal.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    /**
-     * Muestra los elementos del Inventario en la tabla haciendo una query en la base de datos.
-     */
-    
-    public void MostrarInventario(){
+   
+   /**
+    * Muestra los socios en la tabla haciendo una query en la base de datos.
+    */
+   
+   public void MostrarSocios(){
         String fecha;
         
         try{
-            ResultSet r = sentencia.executeQuery("select * from inventario");
-            String titulos[] = {"ID","Nombre","Cantidad","Precio Ind."};
+            ResultSet r = sentencia.executeQuery("select * from socios");
+            String titulos[] = {"DNI","Nombre","% Descuento"};
             m = new DefaultTableModel(null, titulos);
             
-            String fila[] = new String[4];
+            String fila[] = new String[3];
             while(r.next()){
-                fila[0] = r.getString("Id");
+                fila[0] = r.getString("DNI");
                 fila[1] = r.getString("Nombre");
-                fila[2] = r.getString("Cantidad");
-                fila[3] = r.getString("Precio");
+                fila[2] = r.getString("Descuento");
                 m.addRow(fila);
             }
             tabla.setModel(m);
@@ -239,16 +239,30 @@ public class Inventario extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Error al extraer los datos de la tabla"+ex);
         }
     }
-    
-    /**
-     * Metodo que prepara la tabla para la lista de Datos.
-     */
-    
-    private void PrepararTabla(){
-        String titulos[] = {"Id","Nombre","Cantidad","Precio Ind."};
+   
+   /**
+    * Metodo que prepara la tabla para la lista de Datos.
+    */
+   
+   private void PrepararTabla(){
+        String titulos[] = {"DNI","Nombre","% Descuento"};
         m = new DefaultTableModel(null, titulos);
         tabla.setModel(m);
     }
+   
+   /**
+    * Metodo que inserta un nuevo socio en la BBDD.
+    * @param dni DNI del Socio a insertar
+    * @param nombre Nombre del Socio a insertar
+    * @param descuento Descuento que se le aplicara al Socio en su compra si asi lo desea.
+    */
+   
+   private void InsertarSocio(String dni,String nombre,int descuento){
+       
+	   //TERMINAR
+	   
+   }
+  
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

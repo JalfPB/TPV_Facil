@@ -1,4 +1,3 @@
-package Principal;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -158,7 +157,7 @@ public class Venta extends javax.swing.JFrame implements ActionListener{
    public void actionPerformed(ActionEvent e) {
     
    }
-   //CUIDADO CON EL FINAL DE BOTON!!!!
+   
    private void anadir(final JButton boton) {
 	   
 	   boton.addActionListener(new ActionListener() {
