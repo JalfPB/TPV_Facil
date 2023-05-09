@@ -9,7 +9,17 @@ import javax.swing.JPanel;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -23,7 +33,9 @@ import java.io.*;
  */
 public class Venta extends javax.swing.JFrame implements ActionListener{
     
-    ArrayList lista = new ArrayList();
+    ArrayList<Producto> lista = new ArrayList();
+    Statement sentencia;
+    Connection conexion;
 
     /**
      * Creates new form Venta
@@ -32,6 +44,7 @@ public class Venta extends javax.swing.JFrame implements ActionListener{
         initComponents();
         prueba();
         crearTicket();
+        PrepararBaseDatos();
     }
 
     /**
@@ -147,12 +160,6 @@ public class Venta extends javax.swing.JFrame implements ActionListener{
    anadir(boton);
    }
    
-   //IMPLEMENTAR CUANDO SE HAGA LA CONEXION CON LA BASE DE DATOS
-   
-   private void recorrerItems() {
-	   
-   }
-   
    //Metodo necesario para la implementacion
    
    public void actionPerformed(ActionEvent e) {
@@ -165,7 +172,7 @@ public class Venta extends javax.swing.JFrame implements ActionListener{
 
            @Override
            public void actionPerformed(ActionEvent e) {
-               JOptionPane.showMessageDialog(null, "Saludos, funciona!");
+               //JOptionPane.showMessageDialog(null, "Saludos, funciona!");
                //CAMBIAR LUEGO POR EL OBJETO DE LA BBDD
                jTextArea1.append(boton.getText()+ " Funciona");
            }
@@ -189,16 +196,20 @@ public class Venta extends javax.swing.JFrame implements ActionListener{
    
    private void anadirTicketFich() {
 	   
-	   String rutafich="Ticket_",dia,mes,annio;
+	   String rutafich,dia,mes,annio,hora,fecha;
 	   Calendar c = new GregorianCalendar();
+	   Date currentDate = new Date();
+	   hora = DateFormat.getTimeInstance().format(currentDate);
 	   dia = Integer.toString(c.get(Calendar.DATE));
 	   mes = Integer.toString(c.get(Calendar.MONTH));
 	   annio = Integer.toString(c.get(Calendar.YEAR));
 	   
-	   rutafich=rutafich+dia+"-"+mes+"-"+annio+".txt";
+	   fecha="Ticket_"+dia+"-"+mes+"-"+annio+"-"+hora+".txt";
+	   fecha = fecha.replaceAll(":","\'");
+	   rutafich="Tickets/"+fecha;
 	   
 	   try {
-	   
+		   
 		   File fichero = new File (rutafich);
 		   fichero.createNewFile();
 		   
@@ -215,9 +226,53 @@ public class Venta extends javax.swing.JFrame implements ActionListener{
 		   
 		   JOptionPane.showMessageDialog(null, "Ha ocurrido un error al tratar el ticket");
 		   System.out.println(e.getMessage());
+		   System.out.println(rutafich);
 	   }
 	   
 	   
+   }
+   
+   public void obtenerProductos() {
+	   
+	   try{
+	        
+	         String sql = "SELECT * FROM productos";
+	         
+	         ResultSet r = sentencia.executeQuery(sql);
+	         if (r.next()) {
+	        	 //CREAR OBJETO PRODUCTO Y AÑADIRLO A EL ARRAY LISTA
+	        	 lista.add(new Producto(r.getNString("id"),r.getNString("nombre"),r.getInt("cantidad"),r.getFloat("precio")));
+	            }
+	        }catch(Exception e){
+	            JOptionPane.showMessageDialog(null, "Error al obtener los productos "+e);
+	            System.out.println(e.getMessage());
+	        }
+	   
+   }
+   
+   public void PrepararBaseDatos(){
+       try{
+           String controlador="com.mysql.jdbc.Driver";
+           Class.forName(controlador).newInstance();
+       }catch(Exception ex){
+           JOptionPane.showMessageDialog(null, "Error al cargar el controlador");
+       }
+       
+       String DBURL="jdbc:mysql://localhost/tpv_facil";
+       String usuario="root";
+       String password="";
+       try{
+           conexion=DriverManager.getConnection(DBURL,usuario,password);
+       }catch(SQLException ex){
+          Logger.getLogger(Ppal.class.getName()).log(Level.SEVERE, null, ex); 
+       }
+       try
+       {
+           sentencia=conexion.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE,ResultSet.CONCUR_READ_ONLY);
+       } catch (SQLException ex)
+       {
+           Logger.getLogger(Ppal.class.getName()).log(Level.SEVERE, null, ex);
+       }
    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
